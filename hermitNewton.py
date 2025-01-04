@@ -60,14 +60,40 @@ def interpolation(diff_table, x_t, alpha):
         f_alpha += p * val[0]
     
     return f_alpha
+
+def singleDerivatives(diff, h):
+    derivatives = []
+    f_vals = diff[0]
+    for i in range(len(f_vals)):
+        if i >= 1 :
+            derivatives.append((f_vals[i] - f_vals[i - 1]) / h)
+    return derivatives
+    
+def doubleDerivatives(diff, h):
+    derivatives = []
+    f_vals = diff[0]
+    for i in range(len(f_vals)):
+        if i >= 2:
+            derivatives.append((4 * f_vals[i - 1] - 3 * f_vals[i - 2] - f_vals[i]) / (2 * h))
+    return derivatives
             
+def printDerivatives(diff, h):
+    singles = singleDerivatives(diff, h)
+    doubles = doubleDerivatives(diff, h)
+    print('singles:')
+    for i, val in enumerate(singles):
+        print(f"f'_{i} = {val}")
+    print('singles:')
+    for i, val in enumerate(doubles):
+        print(f"f'_{i} = {val}")
     
 def main():
     x, n, alpha, datas = getInput()
     x_t, diffTable = calcDiffTable(x, n, datas)
     f_alpha = interpolation(diffTable, x_t, alpha)
-    print(diffTable)
-    print(f_alpha)
+    print("f(alpha) = ",f_alpha)
+    h = x[1] - x[0] if len(x) > 1 else None
+    printDerivatives(diffTable, h)
 
 if __name__ == "__main__":
     main()
